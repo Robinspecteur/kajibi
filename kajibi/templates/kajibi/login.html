@@ -1,0 +1,28 @@
+{% extends 'kajibi/base.html' %}
+{% load static %}
+
+{% block style %}
+<link href="{% static 'login.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="alert alert-success" role="alert">
+                Tu es déjà connecté, {{ user.username }} !
+        </div>
+    {% else %}
+
+        <form class="form-signin" method="post" action=".">
+        {% csrf_token %}
+            {{ form.username.errors }}
+            {{ form.password.errors }}
+            {{ form.non_field_errors }}
+        <h2 class="form-signin-heading">Se connecter</h2>
+        <label for="{{ form.username.id_for_label }}" class="sr-only">Kajien</label>
+        {{ form.username }}
+        <label for="{{ form.username.id_for_label }}" class="sr-only">Mot de passe</label>
+        {{ form.password }}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
+      </form>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'kajibi/base.html' %}
+{% load static %}
+
+{% block content %}
+    {% if location.finished == True %}
+            <div class="alert alert-info" role="alert">
+                Cette location est finie
+            </div>
+        {% elif location.is_late == True %}
+            <div class="alert alert-warning" role="alert">
+                Cette location a {{ location.delay }} jour{% if location.delay > 1 %}s{% endif %} de retard
+            </div>
+        {% endif %}
+    <div class="container">
+        <div class="row">
+            <h1>{{ location }}</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <ul style="padding-left: 0 !important; list-style: none; ">
+                    <li>Loué par <strong>{{ location.renter_first_name }} {{ location.renter_last_name }}</strong>
+                    {% if location.renter_group %} du {{ location.renter_group }} {% endif %}</li>
+                    <li><img src="{% static 'octicons/build/svg/home.svg' %}" /> &nbsp <span> {{location.renter_address}}</span></li>
+                    <li><img src="{% static 'octicons/build/svg/mail.svg' %}" /> &nbsp <span>{{location.renter_email}} </span></li>
+                    <li><img src="{% static 'octicons/build/svg/device-mobile.svg' %}" /> &nbsp <span>{{location.renter_phone}} </span></li>
+                    <li> Respo sortie : {{ location.rentor_first }}</li>
+                    {% if location.rentor_last %} <li>Respo retour : {{ location.rentor_last }}</li>{% endif %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                Date de début : {{ location.date_begin.date }}<br />
+                Date prévue de fin : {{ location.expected_date_end }}<br />
+                {% if location.finished %} Date de fin : {{ location.date_end }} <br />
+                Montant payé :
+                {% else %} Montant à payer : {% endif %}
+                {{ location.compute_price }}€
+                {% if location.is_late == True %}
+                    ({{ location.delay }} jour{% if location.delay > 1 %}s{% endif %} de retard)
+                {% endif %}<br />
+                Caution : {{ location.get_renter_guarantee_display }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Jeux loués</h3>
+            </div>
+            <div class="col-md-6">
+                {% if location.comments %}<h3>Commentaires</h3>{% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-group">
+                    {% for game in location.rented_games.all %}
+                        <a href="{% url 'fiche' game.id %}" class="list-group-item list-group-item-action">
+                            {{ game.name }}
+                        </a>
+                    {% endfor %}
+                </ul>
+            <br />
+            </div>
+            <div class="col-md-6">
+                {% if location.comments %}{{ location.comments }}{% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary btn-lg">Imprimer la facture</button>
+            </div>
+            {% if location.finished == False %}
+                <div class="col-md-4">
+                    <a href="{% url 'finish_location' location.id %}">
+                        <button type="button" class="btn btn-success btn-lg" type="submit">Finir la location</button>
+                    </a>
+            </div>
+            {% endif %}
+            <div class="col-md-4">
+                <a href="{% url 'delete_location' location.id %}">
+                    <button type="submit" class="btn btn-danger btn-lg">Supprimer la location</button>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

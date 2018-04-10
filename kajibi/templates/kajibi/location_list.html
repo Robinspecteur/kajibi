@@ -1,0 +1,45 @@
+{% extends 'kajibi/base.html' %}
+{% load static %}
+
+{% block style %}
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $('tr').click(function() {
+        var href = $(this).find("a").attr("href");
+        if(href) {
+            window.location = href;
+        }
+    });
+
+});
+</script>
+{% endblock %}
+
+{% block content %}
+    <h1>Locations en cours</h1>
+    {{ location }}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Locataire</th>
+                <th scope="col">Nombre de jeux</th>
+                <th scope="col">A payer</th>
+                <th scope="col">Date de retour</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for location in locations %}
+                <tr class="{% if location.is_late %}table-warning{% endif %}">
+                    <td scope="row"><a href="{% url 'location' location.id %}">{{ location.id }}</a></td>
+                    <td>{{ location.renter_first_name }} {{ location.renter_last_name }} {% if location.renter_group %} du {{ location.renter_group }} {% endif %} </td>
+                    <td>{{ location.number_of_games }}</td>
+                    <td>{{ location.compute_price }} €</td>
+                    <td>{% if location.is_late %}<strong>{% endif %}{{ location.expected_date_end }}{% if location.is_late %}</strong>{% endif %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p class="text-center"><a href="{% url 'old_location_list' %}">Anciennes locations</a></p>
+{% endblock %}

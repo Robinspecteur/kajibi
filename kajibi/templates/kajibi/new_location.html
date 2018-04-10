@@ -1,0 +1,79 @@
+{% extends 'kajibi/base.html' %}
+{% load static %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="fieldWrapper">
+
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form.renter_first_name.errors }}
+                    <label for="{{ form.renter_first_name.id_for_label }}">Prénom</label>
+                {{ form.renter_first_name }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form.renter_last_name.errors }}
+                    <label for="{{ form.renter_last_name.id_for_label }}">Nom</label>
+                {{ form.renter_last_name }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-8">
+                {{ form.renter_address.errors }}
+                    <label for="{{ form.renter_phone.id_for_label }}">Adresse</label>
+                {{ form.renter_address }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form.renter_group.errors }}
+                    <label for="{{ form.renter_group.id_for_label }}">Organisation (facultatif)</label>
+                {{ form.renter_group }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+            {{ form.renter_email.errors }}
+                    <label for="{{ form.renter_email.id_for_label }}">Email</label>
+                {{ form.renter_email }}
+            </div>
+            <div class="form-group col-md-2">
+                {{ form.renter_phone.errors }}
+                    <label for="{{ form.renter_phone.id_for_label }}">Téléphone</label>
+                {{ form.renter_phone }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form.renter_guarantee.errors }}
+                    <label for="{{ form.renter_guarantee.id_for_label }}">Caution</label>
+                {{ form.renter_guarantee }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form.expected_date_end.errors }}
+                    <label for="{{ form.expected_date_end.id_for_label }}">Date prévue de retour</label>
+                {{ form.expected_date_end }}
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form.rented_games.errors }}
+                    <label for="{{ form.rented_games.id_for_label }}">Jeux</label>
+            {{ form.rented_games }}
+
+        </div>
+        <div>
+            {{ form.comments.errors }}
+                    <label for="{{ form.comments.id_for_label }}">Commentaires (facultatif)</label>
+            {{ form.comments }}
+        </div>
+
+        <br \>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </form>
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+{% endblock %}

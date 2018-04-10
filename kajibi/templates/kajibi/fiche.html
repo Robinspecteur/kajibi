@@ -1,0 +1,25 @@
+{% extends 'kajibi/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+    {% if game.is_rented %}
+                <div class="alert alert-info" role="alert">
+                    Ce jeu est actuellement loué
+                </div>
+            {% endif %}
+        <div class="row">
+            <h2 class="col-md-6">{{ game.name }}</h2>
+            <div class="col-md-3">
+                <img src="{% static 'octicons/build/svg/clock.svg' %}" /> &nbsp <span> {{ game.duration }}</span>
+            </div>
+            <div class="col-md-3">
+                <img src="{% static 'octicons/build/svg/organization.svg' %}" /> &nbsp <span>{{ game.players }} </span>
+            </div>
+        </div>
+        <div class="row">
+            <article class="col-md-4"><img src="{{ game.picture.url }}" class="img-responsive" style="width: 100%"/></article>
+            <article class="col-md-8" ><p class="lead">{{ game.description }}</p></article>
+        </div>
+    </div>
+{% endblock %}

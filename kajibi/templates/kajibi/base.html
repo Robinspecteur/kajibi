@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Kajibi</title>
+    <link href="{% static 'bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href=""{% static 'octicons/build/build.css' %}>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    {% block style %}
+    {% endblock %}
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">KAJ</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'accueil' %}">Accueil<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'jeux' %}">Nos jeux</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'location_list' %}">Locations en cours</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'new_location' %}">Nouvelle location</a>
+                </li>
+                {% endif %}
+                <li>
+                    <form class="form-inline my-2 my-lg-0" method="GET" action="">
+                        <input class="form-control mr-sm-2" type="search" name="q" placeholder="Chercher un jeu" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search">Chercher</button>
+                    </form>
+                </li>
+            </ul>
+            <div class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <span class="navbar-text">{{ user.username }} - </span> <a class="nav-item nav-link " href="{% url 'logout' %}">Se déconnecter</a>
+                {% else %}
+                    <a class="nav-item nav-link" href="{% url 'login' %}">Se connecter</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+
+    {% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+    <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+
+{% endfor %}
+        {% block content %}
+        {% endblock %}
+    </div>
+{% block footer %}
+    <div class="fixed-bottom"><p class="text-center small">By Rick - 2018</p></div>
+{% endblock %}
+</body>
+</html>
